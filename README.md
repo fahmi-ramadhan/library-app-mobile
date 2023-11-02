@@ -1,16 +1,23 @@
-# library_app
+# Library Management System Mobile
 
-A new Flutter project.
+Nama: Fahmi Ramadhan<br>
+NPM: 2206026473<br>
+Kelas: PBP A<br>
 
-## Getting Started
+# Tugas 7: Elemen Dasar Flutter
 
-This project is a starting point for a Flutter application.
+<details open>
 
-A few resources to get you started if this is your first Flutter project:
+## Apa perbedaan utama antara stateless dan stateful widget dalam konteks pengembangan aplikasi Flutter?
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Sebutkan seluruh widget yang kamu gunakan untuk menyelesaikan tugas ini dan jelaskan fungsinya masing-masing.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Implementasi _Checklist_
+
+### 1. Membuat sebuah program Flutter baru dengan tema inventory seperti tugas-tugas sebelumnya.
+
+### 2. Membuat tiga tombol sederhana dengan ikon dan teks untuk melihat daftar item, menambah item, dan logout.
+
+### 3. Memunculkan snackbar ketika suatu tombol ditekan.
+
+</details>
