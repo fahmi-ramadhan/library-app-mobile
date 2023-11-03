@@ -25,7 +25,7 @@ class MyHomePage extends StatelessWidget {
         backgroundColor: Colors.blue,
         title: const Text(
           style: TextStyle(color: Colors.white),
-          'Library App',
+          'Library Management System',
         ),
       ),
       body: SingleChildScrollView(
