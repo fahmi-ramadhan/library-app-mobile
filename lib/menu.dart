@@ -4,25 +4,16 @@ class MyHomePage extends StatelessWidget {
   MyHomePage({Key? key}) : super(key: key);
 
   final List<Item> items = [
-    Item("Lihat Item", Icons.checklist),
-    Item("Tambah Item", Icons.add_circle_outline),
-    Item("Logout", Icons.logout),
+    Item("Lihat Item", Icons.checklist, Colors.teal.shade700),
+    Item("Tambah Item", Icons.add_circle_outline, Colors.teal.shade800),
+    Item("Logout", Icons.logout, Colors.teal.shade900),
   ];
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.teal,
         title: const Text(
           style: TextStyle(color: Colors.white),
           'Library Management System',
@@ -39,7 +30,7 @@ class MyHomePage extends StatelessWidget {
                 padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
                 // Widget Text untuk menampilkan tulisan dengan alignment center dan style yang sesuai
                 child: Text(
-                  'Bookshelf', // Text yang menandakan toko
+                  'Bookshelf', // Text yang menandakan bookshelf
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 30,
@@ -72,8 +63,9 @@ class MyHomePage extends StatelessWidget {
 class Item {
   final String name;
   final IconData icon;
+  final Color color;
 
-  Item(this.name, this.icon);
+  Item(this.name, this.icon, this.color);
 }
 
 class ItemCard extends StatelessWidget {
@@ -84,7 +76,7 @@ class ItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.blue,
+      color: item.color,
       child: InkWell(
         // Area responsive terhadap sentuhan
         onTap: () {
