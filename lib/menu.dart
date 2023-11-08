@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/widgets/left_drawer.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({Key? key}) : super(key: key);
@@ -14,11 +15,13 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.teal,
+        foregroundColor: Colors.white,
         title: const Text(
           style: TextStyle(color: Colors.white),
           'Library Management System',
         ),
       ),
+      drawer: LeftDrawer(),
       body: SingleChildScrollView(
         // Widget wrapper yang dapat discroll
         child: Padding(

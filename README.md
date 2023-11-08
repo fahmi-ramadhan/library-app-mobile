@@ -4,9 +4,33 @@ Nama: Fahmi Ramadhan<br>
 NPM: 2206026473<br>
 Kelas: PBP A<br>
 
-# Tugas 7: Elemen Dasar Flutter
+# Tugas 8: Flutter Navigation, Layouts, Forms, and Input Elements
 
 <details open>
+
+## Jelaskan perbedaan antara `Navigator.push()` dan `Navigator.pushReplacement()`, disertai dengan contoh mengenai penggunaan kedua method tersebut yang tepat!
+
+## Jelaskan masing-masing _layout widget_ pada Flutter dan konteks penggunaannya masing-masing!
+
+## Sebutkan apa saja elemen input pada _form_ yang kamu pakai pada tugas kali ini dan jelaskan mengapa kamu menggunakan elemen input tersebut!
+
+## Bagaimana penerapan _clean architecture_ pada aplikasi Flutter?
+
+## Implementasi _checklist_
+
+### 1. Membuat minimal satu halaman baru pada aplikasi, yaitu halaman formulir tambah item baru.
+
+### 2. Mengarahkan pengguna ke halaman form tambah item baru ketika menekan tombol `Tambah Item` pada halaman utama.
+
+### 3. Memunculkan data sesuai isi dari formulir yang diisi dalam sebuah `pop-up` setelah menekan tombol Save pada halaman formulir tambah item baru.
+
+### 4. Membuat sebuah drawer pada aplikasi.
+
+</details>
+
+# Tugas 7: Elemen Dasar Flutter
+
+<details>
 
 ## Apa perbedaan utama antara _stateless_ dan _stateful widget_ dalam konteks pengembangan aplikasi Flutter?
 
