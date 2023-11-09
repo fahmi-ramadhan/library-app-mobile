@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/bookshelf_form.dart';
 import 'package:library_app/widgets/left_drawer.dart';
 
 class MyHomePage extends StatelessWidget {
@@ -88,6 +89,14 @@ class ItemCard extends StatelessWidget {
             ..hideCurrentSnackBar()
             ..showSnackBar(SnackBar(
                 content: Text("Kamu telah menekan tombol ${item.name}!")));
+          // Navigate ke route yang sesuai (tergantung jenis tombol)
+          if (item.name == "Tambah Item") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const BookshelfFormPage()),
+            );
+          }
         },
         child: Container(
           // Container untuk menyimpan Icon dan Text
