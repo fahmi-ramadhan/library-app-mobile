@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:library_app/widgets/left_drawer.dart';
+import 'package:library_app/screens/bookshelf.dart';
+
+List<Book> books = [];
 
 class BookshelfFormPage extends StatefulWidget {
   const BookshelfFormPage({super.key});
@@ -165,6 +168,15 @@ class _BookshelfFormPageState extends State<BookshelfFormPage> {
                       ),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
+                          books.add(
+                            Book(
+                              title: _name,
+                              author: _author,
+                              category: _category,
+                              amount: _amount,
+                              description: _description,
+                            ),
+                          );
                           showDialog(
                             context: context,
                             builder: (context) {

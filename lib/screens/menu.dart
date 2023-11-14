@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:library_app/widgets/left_drawer.dart';
-import 'package:library_app/widgets/item_card.dart';
+import 'package:library_app/widgets/menu_card.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({Key? key}) : super(key: key);
 
-  final List<Item> items = [
-    Item("Lihat Item", Icons.checklist, Colors.teal.shade700),
-    Item("Tambah Item", Icons.add_circle_outline, Colors.teal.shade800),
-    Item("Logout", Icons.logout, Colors.teal.shade900),
+  final List<MenuItem> menuItems = [
+    MenuItem("Lihat Item", Icons.checklist, Colors.teal.shade700),
+    MenuItem("Tambah Item", Icons.add_circle_outline, Colors.teal.shade800),
+    MenuItem("Logout", Icons.logout, Colors.teal.shade900),
   ];
 
   @override
@@ -22,7 +22,7 @@ class MyHomePage extends StatelessWidget {
           'Library Management System',
         ),
       ),
-      drawer: LeftDrawer(),
+      drawer: const LeftDrawer(),
       body: SingleChildScrollView(
         // Widget wrapper yang dapat discroll
         child: Padding(
@@ -51,9 +51,9 @@ class MyHomePage extends StatelessWidget {
                 mainAxisSpacing: 10,
                 crossAxisCount: 3,
                 shrinkWrap: true,
-                children: items.map((Item item) {
-                  // Iterasi untuk setiap item
-                  return ItemCard(item);
+                children: menuItems.map((MenuItem menuItem) {
+                  // Iterasi untuk setiap MenuItem
+                  return MenuCard(menuItem);
                 }).toList(),
               ),
             ],
@@ -64,10 +64,10 @@ class MyHomePage extends StatelessWidget {
   }
 }
 
-class Item {
+class MenuItem {
   final String name;
   final IconData icon;
   final Color color;
 
-  Item(this.name, this.icon, this.color);
+  MenuItem(this.name, this.icon, this.color);
 }

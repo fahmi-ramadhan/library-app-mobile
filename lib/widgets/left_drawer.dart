@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/screens/bookshelf.dart';
 import 'package:library_app/screens/menu.dart';
 import 'package:library_app/screens/bookshelf_form.dart';
 
@@ -54,12 +55,25 @@ class LeftDrawer extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.add_circle_outline),
             title: const Text('Tambah Item'),
-            // Bagian redirection ke BookshelfPage
+            // Bagian redirection ke BookshelfFormPage
             onTap: () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const BookshelfFormPage(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.checklist),
+            title: const Text('Lihat Item'),
+            // Bagian redirection ke BookshelfPage
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const BookshelfPage(),
                 ),
               );
             },

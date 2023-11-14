@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/screens/bookshelf.dart';
 import 'package:library_app/screens/bookshelf_form.dart';
 import 'package:library_app/screens/menu.dart';
 
-class ItemCard extends StatelessWidget {
-  final Item item;
+class MenuCard extends StatelessWidget {
+  final MenuItem menuItem;
 
-  const ItemCard(this.item, {super.key}); // Constructor
+  const MenuCard(this.menuItem, {super.key}); // Constructor
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: item.color,
+      color: menuItem.color,
       child: InkWell(
         // Area responsive terhadap sentuhan
         onTap: () {
@@ -18,13 +19,19 @@ class ItemCard extends StatelessWidget {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(SnackBar(
-                content: Text("Kamu telah menekan tombol ${item.name}!")));
+                content: Text("Kamu telah menekan tombol ${menuItem.name}!")));
           // Navigate ke route yang sesuai (tergantung jenis tombol)
-          if (item.name == "Tambah Item") {
+          if (menuItem.name == "Tambah Item") {
             Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => const BookshelfFormPage()),
+            );
+          }
+          if (menuItem.name == "Lihat Item") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const BookshelfPage()),
             );
           }
         },
@@ -36,13 +43,13 @@ class ItemCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
-                  item.icon,
+                  menuItem.icon,
                   color: Colors.white,
                   size: 30.0,
                 ),
                 const Padding(padding: EdgeInsets.all(3)),
                 Text(
-                  item.name,
+                  menuItem.name,
                   textAlign: TextAlign.center,
                   style: const TextStyle(color: Colors.white),
                 ),
