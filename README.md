@@ -61,11 +61,11 @@ Navigator.pushReplacement(
 
 ## Sebutkan apa saja elemen input pada _form_ yang kamu pakai pada tugas kali ini dan jelaskan mengapa kamu menggunakan elemen input tersebut!
 
-Pada tugas kali ini, saya menggunakan 5 `TextFormField` untuk mendapatkan input berupa judul buku, penulis, kategori, jumlah, dan deskripsi. `TextFormField` digunakan karena input yang diterima hanya berupa teks atau angka (untuk angka, dilakukan validasi dengan mengecek apakah `int.tryParse(value)` bernilai null) 
+Pada tugas kali ini, saya menggunakan 5 `TextFormField` untuk mendapatkan input berupa judul buku, penulis, kategori, jumlah, dan deskripsi. `TextFormField` digunakan karena input yang diterima hanya berupa teks atau angka (untuk angka, dilakukan validasi dengan mengecek apakah `int.tryParse(value)` bernilai null)
 
 ## Bagaimana penerapan _clean architecture_ pada aplikasi Flutter?
 
-Penerapan _clean architecture_ pada aplikasi Flutter biasanya melibatkan pemisahan kode menjadi tiga lapisan: Presentation, Domain, dan Data.
+Penerapan _clean architecture_ pada aplikasi Flutter biasanya melibatkan pemisahan kode menjadi tiga _layer_: Presentation, Domain, dan Data.
 
 1. Presentation Layer: berisi kode yang berinteraksi langsung dengan pengguna, termasuk _widget_ dan _state management_.
 
@@ -91,13 +91,424 @@ lib/
 
 ## Implementasi _checklist_
 
-### 1. Membuat minimal satu halaman baru pada aplikasi, yaitu halaman formulir tambah item baru.
+### 1. Membuat sebuah drawer pada aplikasi.
+
+Pertama-tama, saya membuat sebuah _stateless widget_ baru bernama `LeftDrawer` pada sebuah berkas baru `left_drawer.dart` di direktori baru `widgets`.
+
+```dart
+class LeftDrawer extends StatelessWidget {
+  const LeftDrawer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        children: [
+          const DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.teal,
+            ),
+            child: Column(
+              children: [
+                Text(
+                  'Library Management System',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Padding(padding: EdgeInsets.all(10)),
+                Text(
+                  "Kelola bukumu dengan mudah di sini!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.home_outlined),
+            title: const Text('Halaman Utama'),
+            // Bagian redirection ke MyHomePage
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MyHomePage(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.add_circle_outline),
+            title: const Text('Tambah Item'),
+            // Bagian redirection ke BookshelfPage
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const BookshelfFormPage(),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
+
+Selanjutnya, saya menambahkan konfigurasi drawer pada _widget_ `MyHomePage` di berkas `menu.dart`.
+
+```dart
+class MyHomePage extends StatelessWidget {
+  ...
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        ...
+      ),
+      drawer: LeftDrawer(),
+      body: SingleChildScrollView(
+        ...
+      ),
+    );
+  }
+}
+```
 
 ### 2. Mengarahkan pengguna ke halaman form tambah item baru ketika menekan tombol `Tambah Item` pada halaman utama.
 
-### 3. Memunculkan data sesuai isi dari formulir yang diisi dalam sebuah `pop-up` setelah menekan tombol Save pada halaman formulir tambah item baru.
+Selanjutnya, pada _widget_ `ItemCard` di berkas `item_card.dart`, saya menambahkan kode untuk navigasi ke halaman _form_ tambah _item_ ketika tombol `Tambah Item` ditekan.
 
-### 4. Membuat sebuah drawer pada aplikasi.
+```dart
+class ItemCard extends StatelessWidget {
+  ...
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: item.color,
+      child: InkWell(
+        // Area responsive terhadap sentuhan
+        onTap: () {
+          ...
+          // Navigate ke route yang sesuai (tergantung jenis tombol)
+          if (item.name == "Tambah Item") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const BookshelfFormPage()),
+            );
+          }
+        },
+        ...
+      ),
+    );
+  }
+}
+```
+
+### 3. Membuat minimal satu halaman baru pada aplikasi, yaitu halaman formulir tambah item baru.
+
+Pada tahap ini, saya membuat sebuah _stateful widget_ `BookshelfFormPage` pada berkas `bookshelf_form.dart`.
+
+```dart
+class BookshelfFormPage extends StatefulWidget {
+  const BookshelfFormPage({super.key});
+
+  @override
+  State<BookshelfFormPage> createState() => _BookshelfFormPageState();
+}
+```
+
+Selanjutnya, saya membuat _class state_-nya untuk _widget_ `BookshelfFormPage` yang menyimpan data judul, penulis, kategori, jumlah, dan deskripsi buku.
+
+```dart
+class _BookshelfFormPageState extends State<BookshelfFormPage> {
+  final _formKey = GlobalKey<FormState>();
+  String _name = "";
+  String _author = "";
+  String _category = "";
+  int _amount = 0;
+  String _description = "";
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Center(
+          child: Text(
+            'Form Tambah Buku',
+          ),
+        ),
+        backgroundColor: Colors.teal,
+        foregroundColor: Colors.white,
+      ),
+      drawer: const LeftDrawer(),
+      body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: Column(),
+        ),
+      ),
+    );
+  }
+}
+```
+
+Selanjutnya, `Column()` diisi dengan beberapa _input field_ pada _form_.
+
+```dart
+Column(
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextFormField(
+        decoration: InputDecoration(
+          hintText: "Judul Buku",
+          labelText: "Judul Buku",
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+        ),
+        onChanged: (String? value) {
+          setState(() {
+            _name = value!;
+          });
+        },
+        validator: (String? value) {
+          if (value == null || value.isEmpty) {
+            return "Judul buku tidak boleh kosong!";
+          }
+          return null;
+        },
+      ),
+    ),
+    Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextFormField(
+        decoration: InputDecoration(
+          hintText: "Penulis",
+          labelText: "Penulis",
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+        ),
+        onChanged: (String? value) {
+          setState(() {
+            _author = value!;
+          });
+        },
+        validator: (String? value) {
+          if (value == null || value.isEmpty) {
+            return "Penulis tidak boleh kosong!";
+          }
+          return null;
+        },
+      ),
+    ),
+    Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextFormField(
+        decoration: InputDecoration(
+          hintText: "Kategori",
+          labelText: "Kategori",
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+        ),
+        onChanged: (String? value) {
+          setState(() {
+            _category = value!;
+          });
+        },
+        validator: (String? value) {
+          if (value == null || value.isEmpty) {
+            return "Kategori tidak boleh kosong!";
+          }
+          return null;
+        },
+      ),
+    ),
+    Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextFormField(
+        decoration: InputDecoration(
+          hintText: "Jumlah",
+          labelText: "Jumlah",
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+        ),
+        onChanged: (String? value) {
+          setState(() {
+            _amount = int.parse(value!);
+          });
+        },
+        validator: (String? value) {
+          if (value == null || value.isEmpty) {
+            return "Jumlah tidak boleh kosong!";
+          }
+          if (int.tryParse(value) == null) {
+            return "Jumlah harus berupa angka!";
+          }
+          return null;
+        },
+      ),
+    ),
+    Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextFormField(
+        decoration: InputDecoration(
+          hintText: "Deskripsi",
+          labelText: "Deskripsi",
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+        ),
+        onChanged: (String? value) {
+          setState(() {
+            _description = value!;
+          });
+        },
+        validator: (String? value) {
+          if (value == null || value.isEmpty) {
+            return "Deskripsi tidak boleh kosong!";
+          }
+          return null;
+        },
+      ),
+    ),
+    Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.teal),
+            ),
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text("Item berhasil tersimpan"),
+                      content: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                          children: [
+                            Text('Judul: $_name'),
+                            Text('Penulis: $_author'),
+                            Text('Kategori: $_category'),
+                            Text('Jumlah: $_amount'),
+                            Text('Deskripsi: $_description'),
+                          ],
+                        ),
+                      ),
+                      actions: [
+                        TextButton(
+                          child: const Text("OK"),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+                _formKey.currentState!.reset();
+              }
+            },
+            child: const Text(
+              "Save",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+      ),
+    ),
+  ],
+),
+```
+
+### 4. Memunculkan data sesuai isi dari formulir yang diisi dalam sebuah `pop-up` setelah menekan tombol Save pada halaman formulir tambah item baru.
+
+Menambahkan _children_ baru pada _widget_ `Column()` untuk tombol _save_.
+
+```dart
+Column(
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    ...
+    Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.teal),
+            ),
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text("Item berhasil tersimpan"),
+                      content: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                          children: [
+                            Text('Judul: $_name'),
+                            Text('Penulis: $_author'),
+                            Text('Kategori: $_category'),
+                            Text('Jumlah: $_amount'),
+                            Text('Deskripsi: $_description'),
+                          ],
+                        ),
+                      ),
+                      actions: [
+                        TextButton(
+                          child: const Text("OK"),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+                _formKey.currentState!.reset();
+              }
+            },
+            child: const Text(
+              "Save",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+      ),
+    ),
+  ],
+),
+```
 
 </details>
 
