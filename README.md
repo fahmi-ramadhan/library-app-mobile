@@ -10,11 +10,84 @@ Kelas: PBP A<br>
 
 ## Jelaskan perbedaan antara `Navigator.push()` dan `Navigator.pushReplacement()`, disertai dengan contoh mengenai penggunaan kedua method tersebut yang tepat!
 
+`Navigator.push()` digunakan untuk menavigasi ke halaman baru dan menambahkannya ke _navigation stack_. Halaman sebelumnya tetap ada di _stack_, jadi jika pengguna menekan tombol kembali, mereka akan kembali ke halaman sebelumnya. Contoh penggunaannya:
+```dart
+Navigator.push(
+  context,
+  MaterialPageRoute(
+    builder: (context) => const BookshelfFormPage()
+  ),
+);
+```
+
+Sementara itu, `navigator.pushReplacement()` digunakan untuk menavigasi ke halaman baru dengan menggantikan halaman saat ini di _stack_ dengan halaman baru. Jadi, jika pengguna menekan tombol kembali, mereka tidak akan kembali ke halaman sebelumnya karena halaman tersebut sudah digantikan. Contoh penggunaannya:
+```dart
+Navigator.pushReplacement(
+  context,
+  MaterialPageRoute(
+    builder: (context) => const BookshelfFormPage(),
+  ),
+);
+```
+
 ## Jelaskan masing-masing _layout widget_ pada Flutter dan konteks penggunaannya masing-masing!
+
+1. _Single-child layout widgets_ (Hanya dapat memiliki satu _child widget_ di dalamnya, digunakan untuk mengelola tata letak untuk satu _widget_)
+
+- `Align` : sebuah _widget_ yang digunakan untuk melakukan _alignment_ pada _child_-nya terhadap dirinya sendiri.
+- `AspectRatio` : sebuah _widget_ yang digunakan untuk mengatur ukuran _child_-nya dengan suatu aspek rasio tertentu.
+- `Baseline` : _widget_ yang memposisikan _child_-nya berdasarkan _baseline_ dari _child_ tersebut.
+- `Center` : _Alignment block_ yang memposisikan _child_-nya di tengah-tengah dirinya sendiri secara horizontal dan vertikal
+- `ConstrainedBox` : sebuah _widget_ yang memberikan _constraints_ tambahan pada _child_-nya.
+- `Container` : _wrapper widget_ yang menggabungkan widget umum untuk _painting_, _positioning_, dan _sizing_ pada _children_-nya.
+- dll.
+
+2. _Multi-child layout widgets_ (Dapat memiliki lebih dari satu _child widget_ di dalamnya, digunakan untuk mengelola tata letak beberapa _widget_)
+
+- `Row` : _widget_ yang menampilkan _child_-nya dalam urutan horizontal.
+- `Column` : _widget_ yang menampilkan _child_-nya dalam urutan vertikal.
+- `GridView` : _widget_ yang menampilkan _child_-nya dalam grid dua dimensi.
+- `Flow` : _widget_ yang mengimplementasikan algoritma _flow layout_.
+- dll.
+
+
+3. _Sliver widgets_ (Digunakan untuk menciptakan efek _scroll_ yang kustom dan lazim digunakan dalam `CustomScrollView`)
+
+- `SliverAppBar` : sebuah `AppBar` yang dapat berubah ukurannya saat pengguna melakukan _scroll_. Biasanya digunakan untuk membuat efek _collapsing toolbar_.
+- `SliverList` dan `SliverGrid` : Digunakan untuk menampilkan _list_ atau _grid_ yang dapat di-_scroll_.
+- `SliverToBoxAdapter`: _widget_ yang memungkinkan kita untuk menempatkan _widget_ biasa (box) di dalam `CustomScrollView`.
+- dll.
+
 
 ## Sebutkan apa saja elemen input pada _form_ yang kamu pakai pada tugas kali ini dan jelaskan mengapa kamu menggunakan elemen input tersebut!
 
+Pada tugas kali ini, saya menggunakan 5 `TextFormField` untuk mendapatkan input berupa judul buku, penulis, kategori, jumlah, dan deskripsi. `TextFormField` digunakan karena input yang diterima hanya berupa teks atau angka (untuk angka, dilakukan validasi dengan mengecek apakah `int.tryParse(value)` bernilai null) 
+
 ## Bagaimana penerapan _clean architecture_ pada aplikasi Flutter?
+
+Penerapan _clean architecture_ pada aplikasi Flutter biasanya melibatkan pemisahan kode menjadi tiga lapisan: Presentation, Domain, dan Data.
+
+1. Presentation Layer: berisi kode yang berinteraksi langsung dengan pengguna, termasuk _widget_ dan _state management_.
+
+2. Domain Layer: berisi entitas bisnis dan logika bisnis (_use cases_). Entitas adalah objek sederhana yang mewakili data yang relevan untuk aplikasi. _Use cases_ mewakili semua tindakan yang dapat dilakukan pengguna dalam aplikasi.
+
+3. Data Layer: berisi kode yang berinteraksi dengan sumber data, seperti API dan database. Ini biasanya termasuk _repository_ dan _data source_.
+
+Contoh struktur direktori:
+
+```
+lib/
+|- presentation/
+|  |- pages/
+|  |- widgets/
+|  |- blocs/ or providers/
+|- domain/
+|  |- entities/
+|  |- use_cases/
+|- data/
+|  |- repositories/
+|  |- data_sources/
+```
 
 ## Implementasi _checklist_
 
