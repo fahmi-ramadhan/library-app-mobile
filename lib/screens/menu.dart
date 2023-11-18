@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/widgets/left_drawer.dart';
+import 'package:library_app/widgets/menu_card.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({Key? key}) : super(key: key);
 
-  final List<Item> items = [
-    Item("Lihat Item", Icons.checklist, Colors.teal.shade700),
-    Item("Tambah Item", Icons.add_circle_outline, Colors.teal.shade800),
-    Item("Logout", Icons.logout, Colors.teal.shade900),
+  final List<MenuItem> menuItems = [
+    MenuItem("Lihat Item", Icons.checklist, Colors.teal.shade700),
+    MenuItem("Tambah Item", Icons.add_circle_outline, Colors.teal.shade800),
+    MenuItem("Logout", Icons.logout, Colors.teal.shade900),
   ];
 
   @override
@@ -14,11 +16,13 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.teal,
+        foregroundColor: Colors.white,
         title: const Text(
           style: TextStyle(color: Colors.white),
           'Library Management System',
         ),
       ),
+      drawer: const LeftDrawer(),
       body: SingleChildScrollView(
         // Widget wrapper yang dapat discroll
         child: Padding(
@@ -47,9 +51,9 @@ class MyHomePage extends StatelessWidget {
                 mainAxisSpacing: 10,
                 crossAxisCount: 3,
                 shrinkWrap: true,
-                children: items.map((Item item) {
-                  // Iterasi untuk setiap item
-                  return ItemCard(item);
+                children: menuItems.map((MenuItem menuItem) {
+                  // Iterasi untuk setiap MenuItem
+                  return MenuCard(menuItem);
                 }).toList(),
               ),
             ],
@@ -60,55 +64,10 @@ class MyHomePage extends StatelessWidget {
   }
 }
 
-class Item {
+class MenuItem {
   final String name;
   final IconData icon;
   final Color color;
 
-  Item(this.name, this.icon, this.color);
-}
-
-class ItemCard extends StatelessWidget {
-  final Item item;
-
-  const ItemCard(this.item, {super.key}); // Constructor
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: item.color,
-      child: InkWell(
-        // Area responsive terhadap sentuhan
-        onTap: () {
-          // Memunculkan SnackBar ketika diklik
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(SnackBar(
-                content: Text("Kamu telah menekan tombol ${item.name}!")));
-        },
-        child: Container(
-          // Container untuk menyimpan Icon dan Text
-          padding: const EdgeInsets.all(8),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  item.icon,
-                  color: Colors.white,
-                  size: 30.0,
-                ),
-                const Padding(padding: EdgeInsets.all(3)),
-                Text(
-                  item.name,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  MenuItem(this.name, this.icon, this.color);
 }
