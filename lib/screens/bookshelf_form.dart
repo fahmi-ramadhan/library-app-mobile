@@ -2,14 +2,17 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:library_app/screens/menu.dart';
 import 'package:library_app/widgets/left_drawer.dart';
-import 'package:library_app/screens/bookshelf.dart';
+import 'package:library_app/models/book.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
 List<Book> books = [];
 
 class BookshelfFormPage extends StatefulWidget {
-  const BookshelfFormPage({super.key});
+  final bool openedThroughDrawer;
+
+  const BookshelfFormPage({Key? key, this.openedThroughDrawer = false})
+      : super(key: key);
 
   @override
   State<BookshelfFormPage> createState() => _BookshelfFormPageState();
@@ -35,7 +38,7 @@ class _BookshelfFormPageState extends State<BookshelfFormPage> {
         backgroundColor: Colors.teal,
         foregroundColor: Colors.white,
       ),
-      drawer: const LeftDrawer(),
+      drawer: widget.openedThroughDrawer ? const LeftDrawer() : null,
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -173,9 +176,9 @@ class _BookshelfFormPageState extends State<BookshelfFormPage> {
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           // Kirim ke Django dan tunggu respons
-                          // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
                           final response = await request.postJson(
-                              "http://10.0.2.2:8000/create-flutter/",
+                              // "http://10.0.2.2:8000/create-flutter/",
+                              "http://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/create-flutter/",
                               jsonEncode(<String, String>{
                                 'name': _name,
                                 'author': _author,
@@ -184,16 +187,19 @@ class _BookshelfFormPageState extends State<BookshelfFormPage> {
                                 'description': _description,
                               }));
                           if (response['status'] == 'success') {
+                            // ignore: use_build_context_synchronously
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
                               content: Text("Produk baru berhasil disimpan!"),
                             ));
+                            // ignore: use_build_context_synchronously
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => MyHomePage()),
                             );
                           } else {
+                            // ignore: use_build_context_synchronously
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
                               content: Text(

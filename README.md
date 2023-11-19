@@ -4,9 +4,39 @@ Nama: Fahmi Ramadhan<br>
 NPM: 2206026473<br>
 Kelas: PBP A<br>
 
-# Tugas 8: Flutter Navigation, Layouts, Forms, and Input Elements
+# Tugas 9: Integrasi Layanan Web Django dengan Aplikasi Flutter
 
 <details open>
+
+## Apakah bisa kita melakukan pengambilan data JSON tanpa membuat model terlebih dahulu? Jika iya, apakah hal tersebut lebih baik daripada membuat model sebelum melakukan pengambilan data JSON?
+
+## Jelaskan fungsi dari CookieRequest dan jelaskan mengapa instance CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter.
+
+## Jelaskan mekanisme pengambilan data dari JSON hingga dapat ditampilkan pada Flutter.
+
+## Jelaskan mekanisme autentikasi dari input data akun pada Flutter ke Django hingga selesainya proses autentikasi oleh Django dan tampilnya menu pada Flutter.
+
+## Sebutkan seluruh widget yang kamu pakai pada tugas ini dan jelaskan fungsinya masing-masing.
+
+## Implementasi _Checklist_
+
+### 1. Memastikan deployment proyek tugas Django kamu telah berjalan dengan baik.
+
+### 2. Membuat halaman login pada proyek tugas Flutter.
+
+### 3. Mengintegrasikan sistem autentikasi Django dengan proyek tugas Flutter.
+
+### 4. Membuat model kustom sesuai dengan proyek aplikasi Django.
+
+### 5. Membuat halaman yang berisi daftar semua item yang terdapat pada endpoint JSON di Django yang telah kamu deploy.
+
+### 6. Membuat halaman detail untuk setiap item yang terdapat pada halaman daftar Item.
+
+</details>
+
+# Tugas 8: Flutter Navigation, Layouts, Forms, and Input Elements
+
+<details>
 
 ## Jelaskan perbedaan antara `Navigator.push()` dan `Navigator.pushReplacement()`, disertai dengan contoh mengenai penggunaan kedua method tersebut yang tepat!
 

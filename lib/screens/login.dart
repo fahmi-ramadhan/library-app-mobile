@@ -15,7 +15,7 @@ class LoginApp extends StatelessWidget {
     return MaterialApp(
       title: 'Login',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.teal,
       ),
       home: const LoginPage(),
     );
@@ -79,22 +79,26 @@ class _LoginPageState extends State<LoginPage> {
                 String password = _passwordController.text;
 
                 // Cek kredensial
-                // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
                 // Untuk menyambungkan Android emulator dengan Django pada localhost,
                 // gunakan URL http://10.0.2.2/
                 final response =
-                    await request.login("http://10.0.2.2:8000/auth/login/", {
-                  'username': username,
-                  'password': password,
-                });
+                    // await request.login("http://10.0.2.2:8000/auth/login/", {
+                    await request.login(
+                        "http://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/auth/login/",
+                        {
+                      'username': username,
+                      'password': password,
+                    });
 
                 if (request.loggedIn) {
                   String message = response['message'];
                   String uname = response['username'];
+                  // ignore: use_build_context_synchronously
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => MyHomePage()),
                   );
+                  // ignore: use_build_context_synchronously
                   ScaffoldMessenger.of(context)
                     ..hideCurrentSnackBar()
                     ..showSnackBar(SnackBar(

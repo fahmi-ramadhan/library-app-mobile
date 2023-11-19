@@ -2,18 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:library_app/models/book.dart';
+import 'package:library_app/screens/book_detail.dart';
 import 'package:library_app/widgets/left_drawer.dart';
 
 class BookshelfPage extends StatefulWidget {
-  const BookshelfPage({Key? key}) : super(key: key);
+  final bool openedThroughDrawer;
+
+  const BookshelfPage({Key? key, this.openedThroughDrawer = false})
+      : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _BookshelfPageState createState() => _BookshelfPageState();
 }
 
 class _BookshelfPageState extends State<BookshelfPage> {
-  Future<List<Book>> fetchProduct() async {
-    var url = Uri.parse('http://10.0.2.2:8000/json/');
+  Future<List<Book>> fetchItem() async {
+    // var url = Uri.parse('http://10.0.2.2:8000/json/');
+    var url = Uri.parse('http://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/json/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -22,7 +28,7 @@ class _BookshelfPageState extends State<BookshelfPage> {
     // melakukan decode response menjadi bentuk json
     var data = jsonDecode(utf8.decode(response.bodyBytes));
 
-    // melakukan konversi data json menjadi object Product
+    // melakukan konversi data json menjadi object Book
     List<Book> list_book = [];
     for (var d in data) {
       if (d != null) {
@@ -43,9 +49,9 @@ class _BookshelfPageState extends State<BookshelfPage> {
         backgroundColor: Colors.teal,
         foregroundColor: Colors.white,
       ),
-      drawer: const LeftDrawer(),
+      drawer: widget.openedThroughDrawer ? const LeftDrawer() : null,
       body: FutureBuilder(
-        future: fetchProduct(),
+        future: fetchItem(),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.data == null) {
             return const Center(child: CircularProgressIndicator());
@@ -54,7 +60,7 @@ class _BookshelfPageState extends State<BookshelfPage> {
               return const Column(
                 children: [
                   Text(
-                    "Tidak ada data produk.",
+                    "Tidak ada data buku.",
                     style: TextStyle(color: Color(0xff59A5D8), fontSize: 20),
                   ),
                   SizedBox(height: 8),
@@ -63,55 +69,49 @@ class _BookshelfPageState extends State<BookshelfPage> {
             } else {
               return ListView.builder(
                 itemCount: snapshot.data!.length,
-                itemBuilder: (_, index) => Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "${snapshot.data![index].fields.name}",
-                        style: const TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.teal,
-                        ),
+                itemBuilder: (_, index) => GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            BookDetailPage(book: snapshot.data![index]),
                       ),
-                      const SizedBox(height: 5),
-                      Text(
-                        "by ${snapshot.data![index].fields.author}",
-                        style: const TextStyle(
-                          fontSize: 16.0,
-                          color: Colors.black54,
+                    );
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(left: 16, right: 16, top: 20),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "${snapshot.data![index].fields.name}",
+                          style: const TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.teal,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        "Category: ${snapshot.data![index].fields.category}",
-                        style: const TextStyle(
-                          fontSize: 14.0,
-                          color: Colors.black87,
+                        Text(
+                          "by ${snapshot.data![index].fields.author}",
+                          style: const TextStyle(
+                            fontSize: 16.0,
+                            color: Colors.black54,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        "Amount: ${snapshot.data![index].fields.amount}",
-                        style: const TextStyle(
-                          fontSize: 14.0,
-                          color: Colors.black87,
+                        const SizedBox(height: 6),
+                        Text(
+                          "Amount: ${snapshot.data![index].fields.amount}",
+                          style: const TextStyle(
+                            fontSize: 14.0,
+                            color: Colors.black87,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        "Description: ${snapshot.data![index].fields.description}",
-                        style: const TextStyle(
-                          fontSize: 14.0,
-                          color: Colors.black87,
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               );

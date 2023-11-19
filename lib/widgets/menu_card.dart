@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:library_app/screens/bookshelf.dart';
 import 'package:library_app/screens/list_book.dart';
 import 'package:library_app/screens/bookshelf_form.dart';
 import 'package:library_app/screens/menu.dart';
@@ -39,21 +38,24 @@ class MenuCard extends StatelessWidget {
             );
           } else if (menuItem.name == "Logout") {
             final response = await request.logout(
-                // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
-                "http://10.0.2.2:8000/auth/logout/");
+                // "http://10.0.2.2:8000/auth/logout/");
+                "http://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/auth/logout/");
             String message = response["message"];
             if (response['status']) {
               String uname = response["username"];
+              // ignore: use_build_context_synchronously
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text("$message Sampai jumpa, $uname."),
               ));
+              // ignore: use_build_context_synchronously
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => const LoginPage()),
               );
             } else {
+              // ignore: use_build_context_synchronously
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text("$message"),
+                content: Text(message),
               ));
             }
           }
