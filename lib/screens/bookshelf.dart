@@ -18,7 +18,7 @@ class BookshelfPage extends StatefulWidget {
 
 class _BookshelfPageState extends State<BookshelfPage> {
   Future<List<Book>> fetchItem() async {
-    var url = Uri.parse('http://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/json/');
+    var url = Uri.parse('https://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/json/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},

@@ -27,7 +27,7 @@ Berikut adalah mekanisme pengambilan data dari JSON hingga dapat ditampilkan pad
 1. Fungsi `fetchItem` membuat permintaan HTTP GET ke URL yang ditentukan. Ini dilakukan secara asinkron menggunakan `http.get`.
 
 ```dart
-var url = Uri.parse('http://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/json/');
+var url = Uri.parse('https://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/json/');
 var response = await http.get(
   url,
   headers: {"Content-Type": "application/json"},
@@ -63,7 +63,7 @@ Berikut adalah mekanisme autentikasi pada tugas kali ini.
 
 ```dart
 final response = await request.login(
-  "http://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/auth/login/",
+  "https://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/auth/login/",
   {
     'username': username,
     'password': password,
@@ -285,7 +285,7 @@ class _LoginPageState extends State<LoginPage> {
                 String password = _passwordController.text;
                 final response =
                     await request.login(
-                        "http://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/auth/login/",
+                        "https://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/auth/login/",
                         {
                       'username': username,
                       'password': password,
@@ -356,7 +356,7 @@ class MenuCard extends StatelessWidget {
           ...
           else if (menuItem.name == "Logout") {
             final response = await request.logout(
-                "http://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/auth/logout/");
+                "https://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/auth/logout/");
             String message = response["message"];
             if (response['status']) {
               String uname = response["username"];
@@ -384,7 +384,7 @@ class MenuCard extends StatelessWidget {
 
 ### 4. Membuat model kustom sesuai dengan proyek aplikasi Django.
 
-- Memanfaatkan [Quicktype](https://app.quicktype.io/) untuk membuat model dengan data JSON dari [`http://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/json/`](http://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/json/).
+- Memanfaatkan [Quicktype](https://app.quicktype.io/) untuk membuat model dengan data JSON dari [`https://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/json/`](https://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/json/).
 - Membuat berkas baru bernama `book.dart` pada direktori `lib/models` dan mengisinya dengan kode model dari [Quicktype](https://app.quicktype.io/) tadi.
 
 ### 5. Membuat halaman yang berisi daftar semua item yang terdapat pada endpoint JSON di Django yang telah kamu deploy.
@@ -412,7 +412,7 @@ class BookshelfPage extends StatefulWidget {
 
 class _BookshelfPageState extends State<BookshelfPage> {
   Future<List<Book>> fetchItem() async {
-    var url = Uri.parse('http://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/json/');
+    var url = Uri.parse('https://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/json/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -587,7 +587,7 @@ onPressed: () async {
   if (_formKey.currentState!.validate()) {
     // Kirim ke Django dan tunggu respons
     final response = await request.postJson(
-        "http://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/create-flutter/",
+        "https://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/create-flutter/",
         jsonEncode(<String, String>{
           'name': _name,
           'author': _author,

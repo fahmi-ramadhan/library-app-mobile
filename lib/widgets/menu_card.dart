@@ -38,8 +38,7 @@ class MenuCard extends StatelessWidget {
             );
           } else if (menuItem.name == "Logout") {
             final response = await request.logout(
-                // "http://10.0.2.2:8000/auth/logout/");
-                "http://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/auth/logout/");
+                "https://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/auth/logout/");
             String message = response["message"];
             if (response['status']) {
               String uname = response["username"];
