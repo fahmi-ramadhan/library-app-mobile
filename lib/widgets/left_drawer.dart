@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-// import 'package:library_app/screens/bookshelf.dart';
 import 'package:library_app/screens/menu.dart';
 import 'package:library_app/screens/bookshelf_form.dart';
-import 'package:library_app/screens/list_book.dart';
+import 'package:library_app/screens/bookshelf.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -61,7 +60,8 @@ class LeftDrawer extends StatelessWidget {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const BookshelfFormPage(),
+                  builder: (context) =>
+                      const BookshelfFormPage(openedThroughDrawer: true),
                 ),
               );
             },
@@ -74,7 +74,8 @@ class LeftDrawer extends StatelessWidget {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const BookshelfPage(),
+                  builder: (context) =>
+                      const BookshelfPage(openedThroughDrawer: true),
                 ),
               );
             },
