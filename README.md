@@ -724,6 +724,37 @@ return ListView.builder(
 ...
 ```
 
+## BONUS
+
+### 1. Melakukan filter pada halaman daftar item dengan hanya menampilkan item yang terasosiasi dengan pengguna yang login.
+
+- Memodifikasi fungsi `fetchItem()` pada `bookshelf.dart` menjadi menggunakan method `get()` dari _package_ `pbp_django_auth`
+
+```dart
+...
+class _BookshelfPageState extends State<BookshelfPage> {
+  Future<List<Book>> fetchItem(request) async {
+    var data = await request
+        .get('https://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/get-item/');
+
+    // melakukan konversi data json menjadi object Book
+    List<Book> listBook = [];
+    for (var d in data) {
+      if (d != null) {
+        listBook.add(Book.fromJson(d));
+      }
+    }
+    return listBook;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+    ...
+  }
+}
+```
+
 </details>
 
 # Tugas 8: Flutter Navigation, Layouts, Forms, and Input Elements
