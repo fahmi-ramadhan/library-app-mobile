@@ -1,38 +1,39 @@
-import 'package:library_app/screens/menu.dart';
+import 'package:library_app/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:library_app/screens/register.dart';
 
 void main() {
-  runApp(const LoginApp());
+  runApp(const RegisterApp());
 }
 
-class LoginApp extends StatelessWidget {
-  const LoginApp({super.key});
+class RegisterApp extends StatelessWidget {
+  const RegisterApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Login',
+      title: 'Register',
       theme: ThemeData(
-        primarySwatch: Colors.teal,
+        primarySwatch: Colors.indigo,
       ),
-      home: const LoginPage(),
+      home: const RegisterPage(),
     );
   }
 }
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _passwordConfirmationController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Login',
+          'Register',
           style: TextStyle(
             fontSize: 30.0,
             fontWeight: FontWeight.bold,
@@ -73,41 +74,58 @@ class _LoginPageState extends State<LoginPage> {
               ),
               obscureText: true,
             ),
+            const SizedBox(height: 12.0),
+            TextField(
+              controller: _passwordConfirmationController,
+              decoration: const InputDecoration(
+                labelText: 'Confirm Password',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.lock),
+              ),
+              obscureText: true,
+            ),
             const SizedBox(height: 24.0),
             ElevatedButton(
               onPressed: () async {
                 String username = _usernameController.text;
                 String password = _passwordController.text;
+                String passwordConfirmation =
+                    _passwordConfirmationController.text;
 
-                // Cek kredensial
-                // Untuk menyambungkan Android emulator dengan Django pada localhost,
-                // gunakan URL http://10.0.2.2/
-                final response = await request.login(
-                    "https://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/auth/login/",
-                    {
-                      'username': username,
-                      'password': password,
-                    });
+                if (password != passwordConfirmation) {
+                  ScaffoldMessenger.of(context)
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(const SnackBar(
+                        content: Text(
+                            "Register gagal, kedua field password tidak sama.")));
+                  return;
+                }
+                final response = await request.post(
+                  "https://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/auth/register/",
+                  {
+                    'username': username,
+                    'password': password,
+                  },
+                );
 
-                if (request.loggedIn) {
+                if (response['status']) {
                   String message = response['message'];
-                  String uname = response['username'];
+
                   // ignore: use_build_context_synchronously
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => MyHomePage()),
+                    MaterialPageRoute(builder: (context) => const LoginPage()),
                   );
                   // ignore: use_build_context_synchronously
                   ScaffoldMessenger.of(context)
                     ..hideCurrentSnackBar()
-                    ..showSnackBar(SnackBar(
-                        content: Text("$message Selamat datang, $uname.")));
+                    ..showSnackBar(SnackBar(content: Text(message)));
                 } else {
                   // ignore: use_build_context_synchronously
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      title: const Text('Login Gagal'),
+                      title: const Text('Register Gagal'),
                       content: Text(response['message']),
                       actions: [
                         TextButton(
@@ -130,17 +148,17 @@ class _LoginPageState extends State<LoginPage> {
                   borderRadius: BorderRadius.circular(20),
                 ),
               ),
-              child: const Text('Login'),
+              child: const Text('Register'),
             ),
             TextButton(
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => RegisterPage()),
+                  MaterialPageRoute(builder: (context) => LoginPage()),
                 );
               },
               child: const Text(
-                'Don\'t have an account? Register',
+                'Already have an account? Login',
                 style: TextStyle(color: Colors.teal),
               ),
             ),

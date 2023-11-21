@@ -112,7 +112,6 @@ CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = 'None'
 SESSION_COOKIE_SAMESITE = 'None'
-SECURE_CROSS_ORIGIN_OPENER_POLICY = 'None'
 ```
 - Membuat _method view_ untuk login dan logout pada `authentication/views.py` 
 ```python
@@ -726,7 +725,12 @@ return ListView.builder(
 
 ## BONUS
 
-### 1. Melakukan filter pada halaman daftar item dengan hanya menampilkan item yang terasosiasi dengan pengguna yang login.
+### 1. Mengimplementasikan fitur registrasi akun pada aplikasi Flutter.
+
+- Membuat fungsi `register` pada `authentication/views.py` dan konfigurasi URL _routing_-nya.
+- Membuat halaman register pada berkas `register.dart` di `lib/screens` yang dapat diakses dari halaman login.
+
+### 2. Melakukan filter pada halaman daftar item dengan hanya menampilkan item yang terasosiasi dengan pengguna yang login.
 
 - Memodifikasi fungsi `fetchItem()` pada `bookshelf.dart` menjadi menggunakan method `get()` dari _package_ `pbp_django_auth`
 
