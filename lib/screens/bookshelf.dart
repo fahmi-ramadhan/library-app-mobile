@@ -18,7 +18,6 @@ class BookshelfPage extends StatefulWidget {
 
 class _BookshelfPageState extends State<BookshelfPage> {
   Future<List<Book>> fetchItem() async {
-    // var url = Uri.parse('http://10.0.2.2:8000/json/');
     var url = Uri.parse('http://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/json/');
     var response = await http.get(
       url,
@@ -29,13 +28,13 @@ class _BookshelfPageState extends State<BookshelfPage> {
     var data = jsonDecode(utf8.decode(response.bodyBytes));
 
     // melakukan konversi data json menjadi object Book
-    List<Book> list_book = [];
+    List<Book> listBook = [];
     for (var d in data) {
       if (d != null) {
-        list_book.add(Book.fromJson(d));
+        listBook.add(Book.fromJson(d));
       }
     }
-    return list_book;
+    return listBook;
   }
 
   @override
