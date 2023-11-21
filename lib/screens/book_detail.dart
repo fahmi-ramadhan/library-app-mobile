@@ -63,6 +63,8 @@ class BookDetailPage extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.teal,
+        foregroundColor: Colors.white,
         child: const Icon(Icons.arrow_back),
         onPressed: () {
           Navigator.pop(context);

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:library_app/models/book.dart';
 import 'package:library_app/screens/book_detail.dart';
 import 'package:library_app/widgets/left_drawer.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
 class BookshelfPage extends StatefulWidget {
   final bool openedThroughDrawer;
@@ -17,15 +17,9 @@ class BookshelfPage extends StatefulWidget {
 }
 
 class _BookshelfPageState extends State<BookshelfPage> {
-  Future<List<Book>> fetchItem() async {
-    var url = Uri.parse('http://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/json/');
-    var response = await http.get(
-      url,
-      headers: {"Content-Type": "application/json"},
-    );
-
-    // melakukan decode response menjadi bentuk json
-    var data = jsonDecode(utf8.decode(response.bodyBytes));
+  Future<List<Book>> fetchItem(request) async {
+    var data = await request
+        .get('https://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/get-item/');
 
     // melakukan konversi data json menjadi object Book
     List<Book> listBook = [];
@@ -39,6 +33,7 @@ class _BookshelfPageState extends State<BookshelfPage> {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -50,20 +45,20 @@ class _BookshelfPageState extends State<BookshelfPage> {
       ),
       drawer: widget.openedThroughDrawer ? const LeftDrawer() : null,
       body: FutureBuilder(
-        future: fetchItem(),
+        future: fetchItem(request),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.data == null) {
             return const Center(child: CircularProgressIndicator());
           } else {
-            if (!snapshot.hasData) {
-              return const Column(
-                children: [
-                  Text(
-                    "Tidak ada data buku.",
-                    style: TextStyle(color: Color(0xff59A5D8), fontSize: 20),
-                  ),
-                  SizedBox(height: 8),
-                ],
+            if (snapshot.data!.isEmpty) {
+              return const Center(
+                child: Text(
+                  "Tidak ada data buku.",
+                  style: TextStyle(
+                      color: Colors.teal,
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold),
+                ),
               );
             } else {
               return ListView.builder(

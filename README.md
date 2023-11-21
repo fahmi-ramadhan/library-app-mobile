@@ -27,7 +27,7 @@ Berikut adalah mekanisme pengambilan data dari JSON hingga dapat ditampilkan pad
 1. Fungsi `fetchItem` membuat permintaan HTTP GET ke URL yang ditentukan. Ini dilakukan secara asinkron menggunakan `http.get`.
 
 ```dart
-var url = Uri.parse('http://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/json/');
+var url = Uri.parse('https://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/json/');
 var response = await http.get(
   url,
   headers: {"Content-Type": "application/json"},
@@ -63,7 +63,7 @@ Berikut adalah mekanisme autentikasi pada tugas kali ini.
 
 ```dart
 final response = await request.login(
-  "http://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/auth/login/",
+  "https://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/auth/login/",
   {
     'username': username,
     'password': password,
@@ -112,7 +112,6 @@ CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = 'None'
 SESSION_COOKIE_SAMESITE = 'None'
-SECURE_CROSS_ORIGIN_OPENER_POLICY = 'None'
 ```
 - Membuat _method view_ untuk login dan logout pada `authentication/views.py` 
 ```python
@@ -285,7 +284,7 @@ class _LoginPageState extends State<LoginPage> {
                 String password = _passwordController.text;
                 final response =
                     await request.login(
-                        "http://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/auth/login/",
+                        "https://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/auth/login/",
                         {
                       'username': username,
                       'password': password,
@@ -356,7 +355,7 @@ class MenuCard extends StatelessWidget {
           ...
           else if (menuItem.name == "Logout") {
             final response = await request.logout(
-                "http://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/auth/logout/");
+                "https://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/auth/logout/");
             String message = response["message"];
             if (response['status']) {
               String uname = response["username"];
@@ -384,7 +383,7 @@ class MenuCard extends StatelessWidget {
 
 ### 4. Membuat model kustom sesuai dengan proyek aplikasi Django.
 
-- Memanfaatkan [Quicktype](https://app.quicktype.io/) untuk membuat model dengan data JSON dari [`http://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/json/`](http://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/json/).
+- Memanfaatkan [Quicktype](https://app.quicktype.io/) untuk membuat model dengan data JSON dari [`https://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/json/`](https://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/json/).
 - Membuat berkas baru bernama `book.dart` pada direktori `lib/models` dan mengisinya dengan kode model dari [Quicktype](https://app.quicktype.io/) tadi.
 
 ### 5. Membuat halaman yang berisi daftar semua item yang terdapat pada endpoint JSON di Django yang telah kamu deploy.
@@ -412,7 +411,7 @@ class BookshelfPage extends StatefulWidget {
 
 class _BookshelfPageState extends State<BookshelfPage> {
   Future<List<Book>> fetchItem() async {
-    var url = Uri.parse('http://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/json/');
+    var url = Uri.parse('https://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/json/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -587,7 +586,7 @@ onPressed: () async {
   if (_formKey.currentState!.validate()) {
     // Kirim ke Django dan tunggu respons
     final response = await request.postJson(
-        "http://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/create-flutter/",
+        "https://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/create-flutter/",
         jsonEncode(<String, String>{
           'name': _name,
           'author': _author,
@@ -722,6 +721,42 @@ return ListView.builder(
   ),
 );
 ...
+```
+
+## BONUS
+
+### 1. Mengimplementasikan fitur registrasi akun pada aplikasi Flutter.
+
+- Membuat fungsi `register` pada `authentication/views.py` dan konfigurasi URL _routing_-nya.
+- Membuat halaman register pada berkas `register.dart` di `lib/screens` yang dapat diakses dari halaman login.
+
+### 2. Melakukan filter pada halaman daftar item dengan hanya menampilkan item yang terasosiasi dengan pengguna yang login.
+
+- Memodifikasi fungsi `fetchItem()` pada `bookshelf.dart` menjadi menggunakan method `get()` dari _package_ `pbp_django_auth`
+
+```dart
+...
+class _BookshelfPageState extends State<BookshelfPage> {
+  Future<List<Book>> fetchItem(request) async {
+    var data = await request
+        .get('https://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/get-item/');
+
+    // melakukan konversi data json menjadi object Book
+    List<Book> listBook = [];
+    for (var d in data) {
+      if (d != null) {
+        listBook.add(Book.fromJson(d));
+      }
+    }
+    return listBook;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+    ...
+  }
+}
 ```
 
 </details>

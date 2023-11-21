@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:library_app/widgets/left_drawer.dart';
 import 'package:library_app/widgets/menu_card.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({Key? key}) : super(key: key);
@@ -13,6 +15,8 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+    final username = request.jsonData['username'];
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.teal,
@@ -30,15 +34,15 @@ class MyHomePage extends StatelessWidget {
           child: Column(
             // Widget untuk menampilkan children secara vertikal
             children: <Widget>[
-              const Padding(
-                padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                // Widget Text untuk menampilkan tulisan dengan alignment center dan style yang sesuai
+              Padding(
+                padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                 child: Text(
-                  'Bookshelf', // Text yang menandakan bookshelf
+                  'Logged in as $username',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 30,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
+                    color: Colors.teal.shade900,
                   ),
                 ),
               ),

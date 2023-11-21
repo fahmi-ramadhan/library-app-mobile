@@ -5,6 +5,7 @@ import 'package:library_app/screens/menu.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:library_app/screens/login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MenuCard extends StatelessWidget {
   final MenuItem menuItem;
@@ -38,8 +39,9 @@ class MenuCard extends StatelessWidget {
             );
           } else if (menuItem.name == "Logout") {
             final response = await request.logout(
-                // "http://10.0.2.2:8000/auth/logout/");
-                "http://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/auth/logout/");
+                "https://fahmi-ramadhan21-tugas.pbp.cs.ui.ac.id/auth/logout/");
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            await prefs.setBool('isLoggedIn', false);
             String message = response["message"];
             if (response['status']) {
               String uname = response["username"];
